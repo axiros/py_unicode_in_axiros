@@ -3,7 +3,6 @@
 ## Axiros GmbH
 May, 2015, Gunther Klessinger
 
-Disclaimer: The term ``unicode`` is used  
 <br>
 <br>
 <br>

@@ -38,7 +38,7 @@
 <section><section id="text-in-axiros-python-processes" class="titleslide slide level1"><h1>Text In Axiros Python Processes</h1></section><section id="axiros-gmbh" class="slide level2">
 <h1>Axiros GmbH</h1>
 <p>May, 2015, Gunther Klessinger</p>
-<p><br> <br> <br> <br> Themes: <a href="?theme=white">white</a> <a href="?theme=black">black</a> <a href="?theme=beige">beige</a> <a href="?theme=moon">moon</a> <a href="?theme=league">league</a> <a href="?theme=night">night</a> <a href="?theme=serif">serif</a> <a href="?theme=simple">simple</a> <a href="?theme=sky">sky</a> <a href="?theme=solarized">solarized</a></p>
+<p>Disclaimer: The term <code>unicode</code> is used<br /><br> <br> <br> <br> Themes: <a href="?theme=white">white</a> <a href="?theme=black">black</a> <a href="?theme=beige">beige</a> <a href="?theme=moon">moon</a> <a href="?theme=league">league</a> <a href="?theme=night">night</a> <a href="?theme=serif">serif</a> <a href="?theme=simple">simple</a> <a href="?theme=sky">sky</a> <a href="?theme=solarized">solarized</a></p>
 <ul>
 <li><code>Esc</code> to get an overview</li>
 <li><code>s</code> to present</li>
@@ -58,8 +58,8 @@ False</code></pre>
 <div class="fragment">
 <p>False !?</p>
 </div>
-</section><section id="unicode-to-the-rescue" class="slide level2">
-<h1>unicode to the rescue?</h1>
+</section><section id="unicode-objects-to-the-rescue" class="slide level2">
+<h1>unicode objects to the rescue?</h1>
 <pre><code>#!/usr/bin/env python
 u1 = open(&#39;j1&#39;).read().encode(&#39;utf-8&#39;)
 u2 = open(&#39;j2&#39;).read().encode(&#39;utf-8&#39;)
@@ -146,8 +146,6 @@ UnicodeEncodeError: &#39;ascii&#39; codec cant encode character...</code></pre>
 Traceback (most recent call last): ...
 UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 </div>
-</section><section class="slide level2">
-
 </section></section>
 <section><section id="doomed" class="titleslide slide level1"><h1>Doomed!?</h1></section><section id="check-google" class="slide level2">
 <h1>Check Google</h1>
@@ -160,7 +158,7 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <li><a href="http://python-notes.curiousefficiency.org/en/latest/python3/text_file_processing.html">possibly leading to data corruption</a></li>
 <li><a href="https://github.com/thp/python2sucks">causing nervous breakdowns</a></li>
 </ul>
-<p>and 10000 of the like, typically pointing to Python3's unicode everywhere model.</p>
+<p>and 1000 of the like, typically pointing to Python3's unicode everywhere model.</p>
 <p>Which is the <a href="http://pyvideo.org/video/289/pycon-2010--mastering-python-3-i-o">major</a> compatibility breaker between 2 and 3.</p>
 </section></section>
 <section><section id="answers" class="titleslide slide level1"><h1>Answers</h1></section><section id="the-official-way" class="slide level2">
@@ -171,42 +169,46 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <h1>Feasible?</h1>
 <p>Think a second about what this means:</p>
 <ul>
-<li><strong>Humans</strong> process text, expressed in <em>symbols</em> - which the unicode standard enumerates ongoingly into currently around 1Mio codepoints</li>
+<li><strong>Humans</strong> process text, expressed in <em>symbols</em> - which the unicode standard enumerates ongoingly into currently around 1Mio integers (&quot;codepoints&quot;)</li>
 <li><strong>Systems</strong> process, forward, store only bytes</li>
 <li><strong><a href="http://www.ietf.org/download/rfc-index.txt">Standards</a></strong> define how systems interact - unicode is next to irrelevant here, an <a href="http://carl.sandiego.edu/bus188/osi_model.htm">example</a> for layer6 in the OSI model.</li>
 </ul>
 </section><section id="standards-vs.-unicode" class="slide level2">
 <h1>Standards Vs. Unicode</h1>
-<p>Any text identifier in any standard is: <strong>ASCII</strong>.</p>
-<p>In any protocol. By <em>definition</em> of being a global standard.</p>
-<p>Should we now convert ANY text from outside the process?</p>
+<p>Any text identifier in any global standard is: <strong>ASCII</strong>.</p>
+<p>By <em>definition</em> of being <em>global</em>.</p>
+<p>Should we really do risky conversions of ANY possibly text type object?</p>
 <pre><code>for k, v in my_payload.items():
     if isinstance(v, basestring):
         my_payload[k] = v.decode(&#39;utf-8&#39;) # is it utf-8?! Nesting?</code></pre>
-<p>For getting 'advantages' like this:</p>
+<p>For 'advantages' like this?</p>
 <pre><code>&gt;&gt;&gt; RAM, unic = sys.getsizeof, u&#39; &#39; * 100000
 &gt;&gt;&gt; round(float(RAM(unic)) / RAM(str(unic)), 2)
 4.0</code></pre>
-</section><section id="irrelevancy-of-unicode" class="slide level2">
-<h1>Irrelevancy of Unicode</h1>
+</section><section id="decode-irrelevant" class="slide level2">
+<h1>.Decode() = irrelevant</h1>
 <p>The theory and idea behind having standards accepted, ratified, and agreed upon by nations around the world, is to ensure that the system from country A will be easily integrated with the system from country B with little effort.</p>
 <p>&quot;<em>While unicode maps the BIGGEST POSSIBLE set of meaningful information for inter HUMAN communication, standards define the smallest necessary one for inter SYSTEMS communication.</em>&quot;</p>
+<p>=&gt; Non ASCII text values are typically just passed through, e.g. to storage. Sometimes compared. Decoding required: Next to never!</p>
 </section></section>
 <section><section id="axiros-way" class="titleslide slide level1"><h1>Axiros Way</h1></section><section id="bytestring-sandwich" class="slide level2">
 <h1>Bytestring Sandwich</h1>
-<ul>
-<li>All text is str() type.</li>
-<li>Unicode only as a function</li>
-<li>Like Go, Rust, other modern languages built for inter systems communication</li>
-</ul>
-</section><section id="which-functions" class="slide level2">
-<h1>Which functions?</h1>
+<ol type="1">
+<li><strong>All text is str() type</strong>, i.e. usually exactly the bytes as they come in and have to go out, w/o any conversions at ingress or egress.</li>
+<li>Encoding of <strong>any</strong> str() object is <strong>UTF-8</strong>, which is a (big) superset of ASCII.</li>
+<li>Immediate encoding of <strong>json</strong> <code>loads</code> results to UTF-8.</li>
+<li>We let Python convert types <em>implicitly</em>, behind the scenes (see below)</li>
+<li>Unicode only as intermittent functions - <strong>if</strong> required.</li>
+</ol>
+<p>Note: This is also the way of Go, Rust and other modern languages built for inter systems communication.</p>
+</section><section id="when-to-decode" class="slide level2">
+<h1>When to decode</h1>
 <ul>
 <li>Counting number of symbols (but mind <a href="https://dev.twitter.com/overview/api/counting-characters">normalization</a>)</li>
-<li>upper()</li>
+<li>upper(), lower(), capitalize()</li>
 <li>looping over symbols</li>
 </ul>
-<p>unicode knows about the 'meaning' of characters for humans:</p>
+<p>Unicode knows about the 'meaning' of characters for humans:</p>
 <pre><code>&gt;&gt;&gt; s = &#39;José&#39;; print &#39;%s %s&#39; % (s.upper(),unicode(s).upper())
 JOSé JOSÉ
 &gt;&gt;&gt; for c in s: print c,
@@ -218,39 +220,58 @@ J o s é</code></pre>
 <pre><code>&gt;&gt;&gt; print &#39;%s %s&#39; % (s.upper(),unicode(s).upper())</code></pre>
 <p>No encode, decode - why did this not break, two times?</p>
 <p>Python's does <strong>implicit</strong> type conversions for us - if we <a href="http://www.ianbicking.org/illusive-setdefaultencoding.html">configure it right</a>:</p>
-<p>At process setup time (e.g. paster):</p>
+</section><section id="configuration" class="slide level2">
+<h1>configuration</h1>
+<p>At process setup time:</p>
 <pre><code>if __name__ == &#39;__main__&#39;:
     import sys; reload(sys); sys.setdefaultencoding(&#39;utf-8&#39;)</code></pre>
+<p>Better <a href="http://www.ianbicking.org/illusive-setdefaultencoding.html">Python wide</a>, in <code>site.py</code> or <code>sitecustomize.py</code></p>
 <div class="fragment">
 <p>And in packages' <strong>init</strong>, to enforce this:</p>
 <pre><code>if &#39;ascii&#39; in sys.getdefaultencoding().lower():
-    raise Exception((&quot;sys.defaultencoding not set! &quot;
-        &quot;Axiros modules rely on full range implicit encoding!&quot;))</code></pre>
+    raise Exception((&quot;sys.defaultencoding on ASCII only! &quot;
+        &quot;Axiros modules rely on full range implicit encoding.&quot;))</code></pre>
 </div>
 </section><section id="json" class="slide level2">
 <h1>Json</h1>
-<p>json restricted itself to transferring human symbols only.</p>
-<p>Why? This de-facto standard came from the human text processing world (origins of JS).</p>
-<p>We <a href="https://github.com/axiros/nested_encode">convert</a> any json right after loads:</p>
-<pre><code>&gt;&gt;&gt; from nested_encode import encode_nested # ty, Stephan
+<p>json restricted itself to transferring human symbols only - via unicode codepoints, on top of UTF-8 on the wire.</p>
+<p>Why? Javascript came from the human text processing world</p>
+<ul>
+<li>Json is not an application protocol but a data exchange format, a 'carrier' of application data</li>
+<li>A <code>de-facto</code> standard,now an RFC - for it's <a href="http://www.json.org/fatfree.html">obvious</a> advantages, independent of encoding.</li>
+<li>Safely convertable to UTF-8</li>
+</ul>
+</section><section id="nested-encode" class="slide level2">
+<h1>Nested Encode</h1>
+<p>We <a href="https://github.com/axiros/nested_encode">convert</a> any json right after loads (ty <a href="https://github.com/stephan-hof">SH</a>):</p>
+<pre><code>&gt;&gt;&gt; from nested_encode import encode_nested
 &gt;&gt;&gt; encode_nested(json.loads(data))</code></pre>
-<p>Any other Py2 library we use anyway delivers byte strings as default (e.g. redis).</p>
+<ul>
+<li>Should any other library (suds?) deliver unicode structures - convert same way.</li>
+<li>Py2 libraries normally deliver <em>always</em> byte strings as default.</li>
+</ul>
 </section></section>
-<section><section id="perfect-world" class="titleslide slide level1"><h1>Perfect World</h1></section><section id="all-works" class="slide level2">
-<h1>All works</h1>
+<section><section id="perfect-world" class="titleslide slide level1"><h1>Perfect World</h1></section><section id="python2-perfection" class="slide level2">
+<h1>Python2 = Perfection</h1>
 <pre><code>s = &#39;é&#39;; open(&#39;f&#39;, &#39;w&#39;).write(s)
 os.stat(&#39;f&#39;).st_size == len(s) # True
-unicode(str(u&#39;é&#39;))             # works
-print u&#39;José&#39;                  # can be piped w/o crash
-s == unicode(s)                # True</code></pre>
-<p>Only take care for 'bytes without a meaning' (i.e. the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a>)</p>
+&#39;%s&#39; % unicode(str(u&#39;é&#39;)) == s # works(!), True
+print u&#39;José&#39;                  # can be piped w/o crash</code></pre>
+<ul>
+<li>Ability to work with text 'as is', str(), unicode() <strong>w/o type checking</strong></li>
+<li><strong>Implicit</strong> conversions by Py2, allowing to write lean, simple, uncluttered, <strong><a href="https://www.python.org/dev/peps/pep-0020/">explicit</a></strong> problem domain specific code</li>
+<li>.decode, .encode only for special situations: Mind the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a> when receiving text from ancient times</li>
+</ul>
 </section><section id="links" class="slide level2">
 <h1>Links</h1>
 <ul>
-<li><a href="https://github.com/axiros/unicode_in_axiros/tree/master">This</a></li>
-<li>Why 'official' Python is <a href="https://github.com/AXGKl/unicode-kills-python3">wrong</a></li>
+<li><a href="https://github.com/axiros/unicode_in_axiros/blob/master/show.markdown">This</a> slide set</li>
+<li><a href="https://github.com/AXGKl/unicode-kills-python3">Tons of further information</a> incl. defaultencoding risk analysis and why I think 'official' Python3's unicode only design nowadays is plain wrong (out-dated / risky / obsolete)</li>
 <li>UTF-8 <a href="http://utf8everywhere.org/#faq.python">manifesto</a> about Python3</li>
 </ul>
+</section><section id="section" class="slide level2">
+<h1></h1>
+<p><img src="../images/ax.png" alt="sw" style="border:0px; width: 200px;" /></p>
 </section></section>
     </div>
   </div>
@@ -258,7 +279,9 @@ s == unicode(s)                # True</code></pre>
 
   
 
-
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://intridea.github.io/sketch.js/lib/sketch.js"></script>
+    <script src="dazzleSketch.js"></script>
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
 

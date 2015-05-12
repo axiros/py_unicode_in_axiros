@@ -3,6 +3,7 @@
 ## Axiros GmbH
 May, 2015, Gunther Klessinger
 
+Disclaimer: The term ``unicode`` is used  
 <br>
 <br>
 <br>
@@ -41,7 +42,7 @@ Themes:
 False !?
 
 
-## unicode to the rescue?
+## unicode objects to the rescue?
 
     #!/usr/bin/env python
     u1 = open('j1').read().encode('utf-8')
@@ -147,7 +148,6 @@ the well known ``str()``, ``%s`` problems
     Traceback (most recent call last): ...
     UnicodeDecodeError: 'ascii' codec cant decode ...
 
------------
 
 # Doomed!?
 
@@ -163,7 +163,7 @@ Python 2 unicode handling is
   corruption](http://python-notes.curiousefficiency.org/en/latest/python3/text_file_processing.html)
 - [causing nervous breakdowns](https://github.com/thp/python2sucks)
 
-and 10000 of the like, typically pointing to Python3's unicode everywhere
+and 1000 of the like, typically pointing to Python3's unicode everywhere
 model.
 
 Which is the
@@ -183,7 +183,7 @@ Decode [everywhere](http://nedbatchelder.com/text/unipain.html) - like in Py3
 Think a second about what this means:
 
 - **Humans** process text, expressed in *symbols* - which the unicode standard enumerates
-  ongoingly into currently around 1Mio codepoints
+  ongoingly into currently around 1Mio integers ("codepoints")
 - **Systems** process, forward, store only bytes
 - **[Standards](http://www.ietf.org/download/rfc-index.txt)** define how systems
   interact - unicode is next to irrelevant here, an [example](http://carl.sandiego.edu/bus188/osi_model.htm)
@@ -191,25 +191,24 @@ for layer6 in the OSI model.
 
 ## Standards Vs. Unicode
 
-Any text identifier in any standard is: **ASCII**.
+Any text identifier in any global standard is: **ASCII**.
 
-In any protocol. By *definition* of being a global standard.
+By *definition* of being *global*.
 
-Should we now convert ANY text from outside the process?
+Should we really do risky conversions of ANY possibly text type object?
 
     for k, v in my_payload.items():
         if isinstance(v, basestring):
             my_payload[k] = v.decode('utf-8') # is it utf-8?! Nesting?
 
-
-For getting 'advantages' like this:
+For 'advantages' like this?
 
     >>> RAM, unic = sys.getsizeof, u' ' * 100000
     >>> round(float(RAM(unic)) / RAM(str(unic)), 2)
     4.0
 
 
-## Irrelevancy of Unicode
+## .Decode() = irrelevant
 
 The theory and idea behind having standards accepted, ratified, and agreed upon
 by nations around the world, is to ensure that the system from country A will
@@ -220,22 +219,32 @@ be easily integrated with the system from country B with little effort.
 HUMAN communication, standards define the smallest necessary one for inter SYSTEMS
 communication.*"
 
+=> Non ASCII text values are typically just passed through, e.g. to storage.
+Sometimes compared. Decoding required: Next to never!
+
+
+
 # Axiros Way
 
 ## Bytestring Sandwich
 
-- All text is str() type.
-- Unicode only as a function
-- Like Go, Rust, other modern languages built for inter systems communication
+1. **All text is str() type**, i.e. usually exactly the bytes as they come in and
+   have to go out, w/o any conversions at ingress or egress.
+1. Encoding of **any** str() object is **UTF-8**, which is a (big) superset of ASCII.
+1. Immediate encoding of **json** ``loads`` results to UTF-8.
+1. We let Python convert types *implicitly*, behind the scenes (see below)
+1. Unicode only as intermittent functions - **if** required.
 
-## Which functions?
+Note: This is also the way of Go, Rust and other modern languages built for inter systems communication.
+
+## When to decode
 
 - Counting number of symbols (but mind
   [normalization](https://dev.twitter.com/overview/api/counting-characters))
-- upper()
+- upper(), lower(), capitalize()
 - looping over symbols
 
-unicode knows about the 'meaning' of characters for humans:
+Unicode knows about the 'meaning' of characters for humans:
 
     >>> s = 'José'; print '%s %s' % (s.upper(),unicode(s).upper())
     JOSé JOSÉ
@@ -254,57 +263,83 @@ No encode, decode - why did this not break, two times?
 Python's does **implicit** type conversions for us - if we [configure it
 right](http://www.ianbicking.org/illusive-setdefaultencoding.html):
 
-At process setup time (e.g. paster):
+## configuration
+
+At process setup time:
 
     if __name__ == '__main__':
         import sys; reload(sys); sys.setdefaultencoding('utf-8')
+
+Better [Python wide](http://www.ianbicking.org/illusive-setdefaultencoding.html),
+in ``site.py`` or ``sitecustomize.py``
+
 
 . . .
 
 And in packages' __init__, to enforce this:
 
     if 'ascii' in sys.getdefaultencoding().lower():
-        raise Exception(("sys.defaultencoding not set! "
-            "Axiros modules rely on full range implicit encoding!"))
+        raise Exception(("sys.defaultencoding on ASCII only! "
+            "Axiros modules rely on full range implicit encoding."))
 
 
 
 
 ## Json
 
-json restricted itself to transferring human symbols only.
+json restricted itself to transferring human symbols only - via unicode
+codepoints, on top of UTF-8 on the wire.
 
 Why?
-This de-facto standard came from the human text processing world (origins of
-JS).
+Javascript came from the human text processing world
 
-We [convert](https://github.com/axiros/nested_encode) any json right after loads:
 
-    >>> from nested_encode import encode_nested # ty, Stephan
+- Json is not an application protocol but a data exchange format, a 'carrier'
+  of application data
+- A ``de-facto`` standard,now an RFC - for it's
+  [obvious](http://www.json.org/fatfree.html) advantages, independent of
+encoding.
+- Safely convertable to UTF-8
+
+## Nested Encode
+
+We [convert](https://github.com/axiros/nested_encode) any json right after loads (ty [SH](https://github.com/stephan-hof)):
+
+    >>> from nested_encode import encode_nested
     >>> encode_nested(json.loads(data))
 
-Any other Py2 library we use anyway delivers byte strings as default (e.g. redis).
+- Should any other library (suds?) deliver unicode structures - convert same way.
+- Py2 libraries normally deliver *always* byte strings as default.
 
 # Perfect World
 
-## All works
+## Python2 = Perfection
 
     s = 'é'; open('f', 'w').write(s)
     os.stat('f').st_size == len(s) # True
-    unicode(str(u'é'))             # works
+    '%s' % unicode(str(u'é')) == s # works(!), True
     print u'José'                  # can be piped w/o crash
-    s == unicode(s)                # True
 
-Only take care for 'bytes without a meaning'
-(i.e. the MS codepages
-[fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today))
+- Ability to work with text 'as is', str(), unicode() **w/o type checking**
+- **Implicit** conversions by Py2, allowing to write lean, simple, uncluttered, **[explicit](https://www.python.org/dev/peps/pep-0020/)**
+  problem domain specific code
+- .decode, .encode only for special situations: Mind the MS codepages
+[fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today)
+when receiving text from ancient times
+
 
 
 ## Links
 
 
-- [This](https://github.com/axiros/unicode_in_axiros/tree/master)
-- Why 'official' Python is
-  [wrong](https://github.com/AXGKl/unicode-kills-python3)
+- [This](https://github.com/axiros/unicode_in_axiros/blob/master/show.markdown)
+  slide set
+- [Tons of further information](https://github.com/AXGKl/unicode-kills-python3) incl. defaultencoding risk analysis and why
+  I think 'official' Python3's unicode only design  nowadays is
+  plain wrong (out-dated / risky / obsolete)
 - UTF-8 [manifesto](http://utf8everywhere.org/#faq.python) about Python3
+
+## 
+
+<img src="../images/ax.png" alt="sw" style="border:0px; width: 200px;" />
 

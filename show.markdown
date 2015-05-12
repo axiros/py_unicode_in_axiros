@@ -178,7 +178,7 @@ Decode [everywhere](http://nedbatchelder.com/text/unipain.html) - like in Py3
 <img src="../images/sandwich.png" alt="sw" style="width: 450px;" />
 
 
-## Feasible
+## Feasible?
 
 Think a second about what this means:
 
@@ -295,7 +295,7 @@ Any other Py2 library we use anyway delivers byte strings as default (e.g. redis
     print u'José'                  # can be piped w/o crash
     s == unicode(s)                # True
 
-Only take for bytes without a meaning
+Only take care for 'bytes without a meaning'
 (i.e. the MS codepages
 [fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today))
 

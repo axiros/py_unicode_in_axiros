@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Axiros" />
+  <meta name="dcterms.date" content="2015-05-12" />
+  <title>Text in Python</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Text in Python</h1>
+    <h2 class="author">Axiros</h2>
+    <h3 class="date">May 12, 2015</h3>
+</section>
+
+<section><section id="whats-the-problem-why-should-i-care" class="titleslide slide level1"><h1>Whats the Problem, Why Should I Care</h1></section><section id="what-you-see-what-you-get" class="slide level2">
+<h1>what you see != what you get</h1>
+<pre><code>#!/usr/bin/env python
+s1 = open(&#39;j1&#39;).read()
+s2 = open(&#39;j2&#39;).read()
+print s1, s2
+print s1 == s2
+
+$ ./1.py
+José José
+False</code></pre>
+<div class="fragment">
+<p>False !?</p>
+</div>
+</section><section id="unicode-to-the-rescue" class="slide level2">
+<h1>unicode to the rescue?</h1>
+<pre><code>#!/usr/bin/env python
+u1 = open(&#39;j1&#39;).read().encode(&#39;utf-8&#39;)
+u2 = open(&#39;j2&#39;).read().encode(&#39;utf-8&#39;)
+print u1, u2, isinstance(u1, unicode)
+print u1 == u2
+
+$ ./2.py
+José José True
+False</code></pre>
+<p>same, same...</p>
+</section><section id="foreground-ok---logfile-crashes" class="slide level2">
+<h1>foreground ok - logfile crashes</h1>
+<pre><code>#!/usr/bin/env python
+u1 = open(&#39;j1&#39;).read().decode(&#39;utf-8&#39;)
+print u1
+print &#39;success&#39;
+
+$ ./3.py
+José
+success
+
+$ ./3.py &gt; test
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode character u&#39;\xe9&#39; in position 3:
+ordinal not in range(128)</code></pre>
+<div class="fragment">
+<p>missing: &quot;<code>success</code>&quot;</p>
+</div>
+</section><section id="no-prob" class="slide level2">
+<h1>no prob</h1>
+<p>&quot;I never use <code>decode</code>, don't even know what it does&quot;</p>
+<p>But: json you DO use!</p>
+<pre><code>#!/usr/bin/env python
+import sys
+from json import dumps, loads
+print loads(dumps(sys.argv[1]))
+print &#39;success&#39;</code></pre>
+<p>run:</p>
+<pre><code>$ ./4.py Hans | more
+Hans
+$ ./4.py José | more
+Traceback (most recent call last):
+    print loads(dumps(sys.argv[1]))
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode character...</code></pre>
+</section><section id="apropos-json" class="slide level2">
+<h1>apropos: json</h1>
+<pre><code>#!/usr/bin/env python
+import sys
+from json import dumps, loads
+
+here  = sys.argv[1]
+there = loads(dumps(here))
+print here, there
+print here == there</code></pre>
+<div class="fragment">
+<pre><code>$ ./5.py Hans
+Hans Hans
+True
+$ ./5.py José
+José José
+False
+$ ./5.py José | more
+Traceback (most recent call last):
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode character u&#39;\xe9&#39; in
+position 3: ordinal not in range(128)
+José</code></pre>
+</div>
+</section><section id="not-to-forget" class="slide level2">
+<h1>not to forget</h1>
+<p>the well known <code>str()</code>, <code>%s</code> problems</p>
+<pre><code>&gt;&gt;&gt; from json import loads, dumps
+&gt;&gt;&gt; received = loads(dumps(&#39;José&#39;))
+&gt;&gt;&gt; str(received)
+Traceback (most recent call last):
+UnicodeEncodeError: &#39;ascii&#39; codec cant encode character
+u&#39;\xe9&#39; in position 3:
+ordinal not in range(128)</code></pre>
+<div class="fragment">
+<pre><code>&gt;&gt;&gt; json.loads(json.dumps(&#39;Hans&#39;)) + &#39;José&#39;
+Traceback (most recent call last):
+UnicodeEncodeError: &#39;ascii&#39; codec cant encode character...</code></pre>
+</div>
+<div class="fragment">
+<pre><code>&gt;&gt;&gt; u&#39;%s&#39; % &#39;José&#39;
+Traceback (most recent call last): ...
+UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
+</div>
+</section><section class="slide level2">
+
+</section></section>
+<section><section id="doomed" class="titleslide slide level1"><h1>Doomed!?</h1></section><section id="check-google" class="slide level2">
+<h1>Check Google</h1>
+<p>Python 2 unicode handling is</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=7012683">broken</a></li>
+<li><a href="http://nedbatchelder.com/text/unipain.html">pain</a></li>
+<li><a href="https://pythonhosted.org/kitchen/unicode-frustrations.html">inconsistent, frustrating</a></li>
+<li><a href="http://t-a-w.blogspot.de/2013/09/python-3-unicode-apparently-no-longer.html">extremly shitty</a></li>
+<li><a href="http://python-notes.curiousefficiency.org/en/latest/python3/text_file_processing.html">possibly leading to data corruption</a></li>
+<li><a href="https://github.com/thp/python2sucks">causing nervous breakdowns</a></li>
+</ul>
+<p>and 10000 of the like, typically pointing to Python3's unicode everywhere model.</p>
+<p>Which is the <a href="http://pyvideo.org/video/289/pycon-2010--mastering-python-3-i-o">major</a> compatibility breaker between 2 and 3.</p>
+</section></section>
+<section><section id="answers" class="titleslide slide level1"><h1>Answers</h1></section><section id="the-official-way" class="slide level2">
+<h1>The official way</h1>
+<p>Decode <a href="http://nedbatchelder.com/text/unipain.html">everywhere</a> - like in Py3</p>
+<p><img src="../images/sandwich.png" alt="sw" style="width: 450px;" /></p>
+</section><section id="feasible" class="slide level2">
+<h1>Feasible</h1>
+<p>Think a second about what this means:</p>
+<ul>
+<li><strong>Humans</strong> process text, expressed in <em>symbols</em> - which the unicode standard enumerates ongoingly into currently around 1Mio codepoints</li>
+<li><strong>Systems</strong> process, forward, store only bytes</li>
+<li><strong><a href="http://www.ietf.org/download/rfc-index.txt">Standards</a></strong> define how systems interact - unicode is next to irrelevant here, an <a href="http://carl.sandiego.edu/bus188/osi_model.htm">example</a> for layer6 in the OSI model.</li>
+</ul>
+</section><section id="standards-vs.-unicode" class="slide level2">
+<h1>Standards Vs. Unicode</h1>
+<p>Any text identifier in any standard is: <strong>ASCII</strong>.</p>
+<p>In any protocol. By <em>definition</em> of being a global standard.</p>
+<p>Should we now convert ANY text from outside the process?</p>
+<pre><code>for k, v in my_payload.items():
+    if isinstance(v, basestring):
+        my_payload[k] = v.decode(&#39;utf-8&#39;) # is it utf-8?! Nesting?</code></pre>
+<p>For getting 'advantages' like this:</p>
+<pre><code>&gt;&gt;&gt; RAM, unic = sys.getsizeof, u&#39; &#39; * 100000
+&gt;&gt;&gt; round(float(RAM(unic)) / RAM(str(unic)), 2)
+4.0</code></pre>
+</section><section id="irrelevancy-of-unicode" class="slide level2">
+<h1>Irrelevancy of Unicode</h1>
+<p>The theory and idea behind having standards accepted, ratified, and agreed upon by nations around the world, is to ensure that the system from country A will be easily integrated with the system from country B with little effort.</p>
+<p>&quot;<em>While unicode maps the BIGGEST POSSIBLE set of meaningful information for inter HUMAN communication, standards define the smallest necessary one for inter SYSTEMS communication.</em>&quot;</p>
+</section></section>
+<section><section id="axiros-way" class="titleslide slide level1"><h1>Axiros Way</h1></section><section id="bytestring-sandwich" class="slide level2">
+<h1>Bytestring Sandwich</h1>
+<ul>
+<li>All text is str() type.</li>
+<li>Unicode only as a function</li>
+<li>Like Go, Rust, other modern languages built for inter systems communication</li>
+</ul>
+</section><section id="which-functions" class="slide level2">
+<h1>Which functions?</h1>
+<ul>
+<li>Counting number of symbols (but mind <a href="https://dev.twitter.com/overview/api/counting-characters">normalization</a>)</li>
+<li>upper()</li>
+<li>looping over symbols</li>
+</ul>
+<p>unicode knows about the 'meaning' of characters for humans:</p>
+<pre><code>&gt;&gt;&gt; s = &#39;José&#39;; print &#39;%s %s&#39; % (s.upper(),unicode(s).upper())
+JOSé JOSÉ
+&gt;&gt;&gt; for c in s: print c,
+J o s ? ?
+&gt;&gt;&gt; for c in unicode(s): print c
+J o s é</code></pre>
+</section><section id="defaultencoding" class="slide level2">
+<h1>defaultencoding</h1>
+<pre><code>&gt;&gt;&gt; print &#39;%s %s&#39; % (s.upper(),unicode(s).upper())</code></pre>
+<p>No encode, decode - why did this not break, two times?</p>
+<p>Python's does <strong>implicit</strong> type conversions for us - if we <a href="http://www.ianbicking.org/illusive-setdefaultencoding.html">configure it right</a>:</p>
+<p>At process setup time (e.g. paster):</p>
+<pre><code>if __name__ == &#39;__main__&#39;:
+    import sys; reload(sys); sys.setdefaultencoding(&#39;utf-8&#39;)</code></pre>
+<div class="fragment">
+<p>And in packages' <strong>init</strong>, to enforce this:</p>
+<pre><code>if &#39;ascii&#39; in sys.getdefaultencoding().lower():
+    raise Exception((&quot;sys.defaultencoding not set! &quot;
+        &quot;Axiros modules rely on full range implicit encoding!&quot;))</code></pre>
+</div>
+</section><section id="json" class="slide level2">
+<h1>Json</h1>
+<p>json restricted itself to transferring human symbols only.</p>
+<p>Why? This de-facto standard came from the human text processing world (origins of JS).</p>
+<p>We <a href="https://github.com/axiros/nested_encode">convert</a> any json right after loads:</p>
+<pre><code>&gt;&gt;&gt; from nested_encode import encode_nested # ty, Stephan
+&gt;&gt;&gt; encode_nested(json.loads(data))</code></pre>
+<p>Any other Py2 library we use anyway delivers byte strings as default (e.g. redis).</p>
+</section></section>
+<section><section id="perfect-world" class="titleslide slide level1"><h1>Perfect World</h1></section><section id="all-works" class="slide level2">
+<h1>All works</h1>
+<pre><code>s = &#39;é&#39;; open(&#39;f&#39;, &#39;w&#39;).write(s)
+os.stat(&#39;f&#39;).st_size == len(s) # True
+unicode(str(u&#39;é&#39;))             # works
+print u&#39;José&#39;                  # can be piped w/o crash
+s == unicode(s)                # True</code></pre>
+<p>Only take for bytes without a meaning (i.e. the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a>)</p>
+</section></section>
+    </div>
+  </div>
+
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.min.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: 'black', // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+    </body>
+</html>

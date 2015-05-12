@@ -21,6 +21,7 @@ Themes:
 
 - ``Esc`` to get an overview
 - ``s`` to present
+- ``STRG-` + STRG-[1-9] to sketch, STRG-[-=] width``
 
 # Whats the Problem, Why Should I Care
 

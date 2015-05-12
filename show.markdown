@@ -1,6 +1,26 @@
-% Text in Python
-% Axiros
-% May 12, 2015
+# Text In Axiros Python Processes
+
+## Axiros GmbH
+May, 2015, Gunther Klessinger
+
+<br>
+<br>
+<br>
+<br>
+Themes:
+[white](?theme=white)
+[black](?theme=black) 
+[beige](?theme=beige) 
+[moon](?theme=moon)
+[league](?theme=league)
+[night](?theme=night)
+[serif](?theme=serif)
+[simple](?theme=simple)
+[sky](?theme=sky)
+[solarized](?theme=solarized) 
+
+- ``Esc`` to get an overview
+- ``s`` to present
 
 # Whats the Problem, Why Should I Care
 
@@ -280,5 +300,11 @@ Only take for bytes without a meaning
 [fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today))
 
 
+## Links
 
+
+- [This](https://github.com/axiros/unicode_in_axiros/tree/master)
+- Why 'official' Python is
+  [wrong](https://github.com/AXGKl/unicode-kills-python3)
+- UTF-8 [manifesto](http://utf8everywhere.org/#faq.python) about Python3
 

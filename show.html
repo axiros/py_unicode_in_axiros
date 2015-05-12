@@ -162,7 +162,7 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <p>Decode <a href="http://nedbatchelder.com/text/unipain.html">everywhere</a> - like in Py3</p>
 <p><img src="../images/sandwich.png" alt="sw" style="width: 450px;" /></p>
 </section><section id="feasible" class="slide level2">
-<h1>Feasible</h1>
+<h1>Feasible?</h1>
 <p>Think a second about what this means:</p>
 <ul>
 <li><strong>Humans</strong> process text, expressed in <em>symbols</em> - which the unicode standard enumerates ongoingly into currently around 1Mio codepoints</li>
@@ -237,7 +237,7 @@ os.stat(&#39;f&#39;).st_size == len(s) # True
 unicode(str(u&#39;é&#39;))             # works
 print u&#39;José&#39;                  # can be piped w/o crash
 s == unicode(s)                # True</code></pre>
-<p>Only take for bytes without a meaning (i.e. the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a>)</p>
+<p>Only take care for 'bytes without a meaning' (i.e. the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a>)</p>
 </section><section id="links" class="slide level2">
 <h1>Links</h1>
 <ul>

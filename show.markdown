@@ -115,37 +115,6 @@ the well known ``str()``, ``%s`` problems
     Traceback (most recent call last): ...
     UnicodeDecodeError: 'ascii' codec cant decode ...
 
-## Text *Can* Be Hard
-
-    #!/usr/bin/env python
-    s1 = open('j1').read()
-    s2 = open('j2').read()
-    print s1, s2
-    print s1 == s2
-
-    $ ./1.py
-    José José
-    False
-
-. . .
-
-False !?
-
-
-## But Unicode Is Not The Solution
-
-    #!/usr/bin/env python
-    u1 = open('j1').read().encode('utf-8')
-    u2 = open('j2').read().encode('utf-8')
-    print u1, u2, isinstance(u1, unicode)
-    print u1 == u2
-
-    $ ./2.py
-    José José True
-    False
-
-same, same...
-
 
 # Doomed!?
 
@@ -166,6 +135,8 @@ model.
 
 Which is the
 [major](http://pyvideo.org/video/289/pycon-2010--mastering-python-3-i-o) compatibility breaker between 2 and 3.
+
+
 
 # Offical 'Solution'
 
@@ -188,6 +159,7 @@ Think a second about what this means:
 - **[Standards](http://www.ietf.org/download/rfc-index.txt)** define how systems
   interact - unicode is next to irrelevant here, an [example](http://carl.sandiego.edu/bus188/osi_model.htm)
 for layer6 in the OSI model.
+
 
 ## Standards Vs. Unicode
 
@@ -327,6 +299,39 @@ encoding.
 - .decode, .encode only for *special* situations: Mind the MS codepages
 [fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today)
 when receiving text from ancient times
+
+
+## Human Text *Can* Be Hard
+
+    #!/usr/bin/env python
+    s1 = open('j1').read()
+    s2 = open('j2').read()
+    print s1, s2
+    print s1 == s2
+
+    $ ./1.py
+    José José
+    False
+
+. . .
+
+False !?
+
+
+## But Unicode Is Not The Solution
+
+    #!/usr/bin/env python
+    u1 = open('j1').read().decode('utf-8')
+    u2 = open('j2').read().decode('utf-8')
+    print u1, u2, isinstance(u1, unicode)
+    print u1 == u2
+
+    $ ./2.py
+    José José True
+    False
+
+same, same...
+
 
 
 

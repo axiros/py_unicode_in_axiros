@@ -121,32 +121,6 @@ UnicodeEncodeError: &#39;ascii&#39; codec cant encode character...</code></pre>
 Traceback (most recent call last): ...
 UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 </div>
-</section><section id="text-can-be-hard" class="slide level2">
-<h1>Text <em>Can</em> Be Hard</h1>
-<pre><code>#!/usr/bin/env python
-s1 = open(&#39;j1&#39;).read()
-s2 = open(&#39;j2&#39;).read()
-print s1, s2
-print s1 == s2
-
-$ ./1.py
-José José
-False</code></pre>
-<div class="fragment">
-<p>False !?</p>
-</div>
-</section><section id="but-unicode-is-not-the-solution" class="slide level2">
-<h1>But Unicode Is Not The Solution</h1>
-<pre><code>#!/usr/bin/env python
-u1 = open(&#39;j1&#39;).read().encode(&#39;utf-8&#39;)
-u2 = open(&#39;j2&#39;).read().encode(&#39;utf-8&#39;)
-print u1, u2, isinstance(u1, unicode)
-print u1 == u2
-
-$ ./2.py
-José José True
-False</code></pre>
-<p>same, same...</p>
 </section></section>
 <section><section id="doomed" class="titleslide slide level1"><h1>Doomed!?</h1></section><section id="check-google" class="slide level2">
 <h1>Check Google</h1>
@@ -263,6 +237,32 @@ print u&#39;José&#39;                  # can be piped w/o crash</code></pre>
 <li><strong>Implicit</strong> conversions by Py2, allowing to write lean, simple, uncluttered, <strong><a href="https://www.python.org/dev/peps/pep-0020/">explicit</a></strong> problem domain specific code</li>
 <li>.decode, .encode only for <em>special</em> situations: Mind the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a> when receiving text from ancient times</li>
 </ul>
+</section><section id="human-text-can-be-hard" class="slide level2">
+<h1>Human Text <em>Can</em> Be Hard</h1>
+<pre><code>#!/usr/bin/env python
+s1 = open(&#39;j1&#39;).read()
+s2 = open(&#39;j2&#39;).read()
+print s1, s2
+print s1 == s2
+
+$ ./1.py
+José José
+False</code></pre>
+<div class="fragment">
+<p>False !?</p>
+</div>
+</section><section id="but-unicode-is-not-the-solution" class="slide level2">
+<h1>But Unicode Is Not The Solution</h1>
+<pre><code>#!/usr/bin/env python
+u1 = open(&#39;j1&#39;).read().decode(&#39;utf-8&#39;)
+u2 = open(&#39;j2&#39;).read().decode(&#39;utf-8&#39;)
+print u1, u2, isinstance(u1, unicode)
+print u1 == u2
+
+$ ./2.py
+José José True
+False</code></pre>
+<p>same, same...</p>
 </section><section id="links" class="slide level2">
 <h1>Links</h1>
 <ul>

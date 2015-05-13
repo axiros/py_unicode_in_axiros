@@ -162,10 +162,10 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <p>and 1000 of the like, typically pointing to Python3's unicode everywhere model.</p>
 <p>Which is the <a href="http://pyvideo.org/video/289/pycon-2010--mastering-python-3-i-o">major</a> compatibility breaker between 2 and 3.</p>
 </section></section>
-<section><section id="answers" class="titleslide slide level1"><h1>Answers</h1></section><section id="the-official-way" class="slide level2">
-<h1>The official way</h1>
-<p>Decode <a href="http://nedbatchelder.com/text/unipain.html">everywhere</a> - like in Py3</p>
-<p><img src="../images/sandwich.png" alt="sw" style="width: 450px;" /></p>
+<section><section id="offical-solution" class="titleslide slide level1"><h1>Offical 'Solution'</h1></section><section id="unicode-sandwich" class="slide level2">
+<h1>Unicode Sandwich</h1>
+<p>Decode → Process → Encode. Everything.</p>
+<p><a href="http://nedbatchelder.com/text/unipain.html"> <img src="../images/sandwich.png" alt="sw" style="width: 450px;" /> </a></p>
 </section><section id="feasible" class="slide level2">
 <h1>Feasible?</h1>
 <p>Think a second about what this means:</p>
@@ -192,8 +192,8 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <p>&quot;<em>While unicode maps the BIGGEST POSSIBLE set of meaningful information for inter HUMAN communication, standards define the smallest necessary one for inter SYSTEMS communication.</em>&quot;</p>
 <p>=&gt; Non ASCII text values are typically just passed through, e.g. to storage. Sometimes compared. Decoding required: Next to never!</p>
 </section></section>
-<section><section id="axiros-way" class="titleslide slide level1"><h1>Axiros Way</h1></section><section id="bytestring-sandwich" class="slide level2">
-<h1>Bytestring Sandwich</h1>
+<section><section id="the-better-way" class="titleslide slide level1"><h1>The Better Way</h1></section><section id="all-text-is-bytes" class="slide level2">
+<h1>All Text Is Bytes</h1>
 <ol type="1">
 <li><strong>All text is str() type</strong>, i.e. usually exactly the bytes as they come in and have to go out, w/o any conversions at ingress or egress.</li>
 <li>Encoding of <strong>any</strong> str() object is <strong>UTF-8</strong>, which is a (big) superset of ASCII.</li>
@@ -217,12 +217,12 @@ J o s ? ?
 &gt;&gt;&gt; for c in unicode(s): print c
 J o s é</code></pre>
 </section><section id="defaultencoding" class="slide level2">
-<h1>defaultencoding</h1>
+<h1>Defaultencoding</h1>
 <pre><code>&gt;&gt;&gt; print &#39;%s %s&#39; % (s.upper(),unicode(s).upper())</code></pre>
 <p>No encode, decode - why did this not break, two times?</p>
 <p>Python's does <strong>implicit</strong> type conversions for us - if we <a href="http://www.ianbicking.org/illusive-setdefaultencoding.html">configure it right</a>:</p>
 </section><section id="configuration" class="slide level2">
-<h1>configuration</h1>
+<h1>Configuration</h1>
 <p>At process setup time:</p>
 <pre><code>if __name__ == &#39;__main__&#39;:
     import sys; reload(sys); sys.setdefaultencoding(&#39;utf-8&#39;)</code></pre>
@@ -252,7 +252,7 @@ J o s é</code></pre>
 <li>Py2 libraries normally deliver <em>always</em> byte strings as default.</li>
 </ul>
 </section></section>
-<section><section id="perfect-world" class="titleslide slide level1"><h1>Perfect World</h1></section><section id="python2-perfection" class="slide level2">
+<section><section id="problem-solved" class="titleslide slide level1"><h1>Problem Solved</h1></section><section id="python2-perfection" class="slide level2">
 <h1>Python2 = Perfection</h1>
 <pre><code>s = &#39;é&#39;; open(&#39;f&#39;, &#39;w&#39;).write(s)
 os.stat(&#39;f&#39;).st_size == len(s) # True

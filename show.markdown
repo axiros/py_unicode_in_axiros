@@ -169,13 +169,15 @@ model.
 Which is the
 [major](http://pyvideo.org/video/289/pycon-2010--mastering-python-3-i-o) compatibility breaker between 2 and 3.
 
-# Answers
+# Offical 'Solution'
 
-## The official way
+## Unicode Sandwich
 
-Decode [everywhere](http://nedbatchelder.com/text/unipain.html) - like in Py3
+Decode → Process → Encode. Everything.
 
+<a href="http://nedbatchelder.com/text/unipain.html">
 <img src="../images/sandwich.png" alt="sw" style="width: 450px;" />
+</a>
 
 
 ## Feasible?
@@ -224,9 +226,9 @@ Sometimes compared. Decoding required: Next to never!
 
 
 
-# Axiros Way
+# The Better Way
 
-## Bytestring Sandwich
+## All Text Is Bytes
 
 1. **All text is str() type**, i.e. usually exactly the bytes as they come in and
    have to go out, w/o any conversions at ingress or egress.
@@ -254,7 +256,7 @@ Unicode knows about the 'meaning' of characters for humans:
     J o s é
 
 
-## defaultencoding
+## Defaultencoding
 
     >>> print '%s %s' % (s.upper(),unicode(s).upper())
 
@@ -263,7 +265,7 @@ No encode, decode - why did this not break, two times?
 Python's does **implicit** type conversions for us - if we [configure it
 right](http://www.ianbicking.org/illusive-setdefaultencoding.html):
 
-## configuration
+## Configuration
 
 At process setup time:
 
@@ -311,7 +313,7 @@ We [convert](https://github.com/axiros/nested_encode) any json right after loads
 - Should any other library (suds?) deliver unicode structures - convert same way.
 - Py2 libraries normally deliver *always* byte strings as default.
 
-# Perfect World
+# Problem Solved
 
 ## Python2 = Perfection
 

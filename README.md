@@ -16,10 +16,11 @@ It did not work out of box with the reveal.js version in this repo, so make.py i
 
 Structure of presentation must exactly follow this scheme:
 
-h1 (#) Only Title, no other text on slide
-   h2 (##) Title with content
-   h2 (##) Title with content
-h1 (#) Next Title
+- h1 (#) Only Title, no other text on slide
+   - h2 (##) Title with content
+   - h2 (##) Title with content
+- h1 (#) Next Title
+- (...)
 
 No h3 allowed.
 

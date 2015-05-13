@@ -215,7 +215,7 @@ Sometimes compared. Decoding required: Next to never!
 False !?
 
 
-## But .decode() Is Not The Solution
+## But .decode() Alone Not The Solution
 
     #!/usr/bin/env python
     u1 = open('j1').read().decode('utf-8')

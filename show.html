@@ -29,17 +29,18 @@
     <div class="slides">
 
 
-<section><section id="text-in-industrial-python-linux-applications" class="titleslide slide level1"><h1>Text In Industrial Python Linux Applications</h1></section><section id="axiros-gmbh" class="slide level2">
+<section><section id="text-in-python-m2miot-industrial-applications" class="titleslide slide level1"><h1>Text In Python <a href="http://en.wikipedia.org/wiki/Machine_to_machine">M2M/IoT</a> &amp; Industrial Applications</h1></section><section id="axiros-gmbh" class="slide level2">
 <h1>Axiros GmbH</h1>
 <p>May, 2015, Gunther Klessinger</p>
-<p><br> <br> Themes: <a href="?theme=white">white</a> <a href="?theme=black">black</a> <a href="?theme=beige">beige</a> <a href="?theme=moon">moon</a> <a href="?theme=league">league</a> <a href="?theme=night">night</a> <a href="?theme=serif">serif</a> <a href="?theme=simple">simple</a> <a href="?theme=sky">sky</a> <a href="?theme=solarized">solarized</a></p>
+<p><br> <br></p>
 <ul>
-<li><code>Esc</code> to get an overview</li>
-<li><code>s</code> to present</li>
+<li><code>Esc</code>: Overview</li>
+<li><code>s</code>: Present</li>
 <li><code>STRG-` + STRG-[1-9] to sketch, STRG-[-=] width</code></li>
 </ul>
+<p>Themes: <a href="?theme=white">white</a> <a href="?theme=black">black</a> <a href="?theme=beige">beige</a> <a href="?theme=moon">moon</a> <a href="?theme=league">league</a> <a href="?theme=night">night</a> <a href="?theme=serif">serif</a> <a href="?theme=simple">simple</a> <a href="?theme=sky">sky</a> <a href="?theme=solarized">solarized</a></p>
 </section></section>
-<section><section id="whats-the-problem-why-should-i-care" class="titleslide slide level1"><h1>&quot;Whats the Problem, Why Should I Care&quot;</h1></section><section id="foreground-ok---logfile-crashes" class="slide level2">
+<section><section id="whats-the-problem-why-should-i-care" class="titleslide slide level1"><h1>&quot;Whats the Problem, Why Should I Care?&quot;</h1></section><section id="foreground-ok---logfile-crashes" class="slide level2">
 <h1>Foreground Ok - Logfile Crashes</h1>
 <pre><code>#!/usr/bin/env python
 u1 = open(&#39;j1&#39;).read().decode(&#39;utf-8&#39;)
@@ -155,10 +156,37 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 &gt;&gt;&gt; round(float(RAM(unic)) / RAM(str(unic)), 2)
 4.0</code></pre>
 </section><section id="decode-irrelevant" class="slide level2">
-<h1>.Decode() = irrelevant</h1>
+<h1>.decode() = irrelevant</h1>
 <p>The theory and idea behind having standards accepted, ratified, and agreed upon by nations around the world, is to ensure that the system from country A will be easily integrated with the system from country B with little effort.</p>
 <p>&quot;<em>While unicode maps the BIGGEST POSSIBLE set of meaningful information for inter HUMAN communication, standards define the smallest necessary one for inter SYSTEMS communication.</em>&quot;</p>
 <p>=&gt; Non ASCII text values are typically just passed through, e.g. to storage. Sometimes compared. Decoding required: Next to never!</p>
+</section><section id="human-text-can-be-hard" class="slide level2">
+<h1>Human Text <em>Can</em> Be Hard</h1>
+<pre><code>#!/usr/bin/env python
+s1 = open(&#39;j1&#39;).read()
+s2 = open(&#39;j2&#39;).read()
+print s1, s2
+print s1 == s2
+
+$ ./1.py
+José José
+False</code></pre>
+<div class="fragment">
+<p>False !?</p>
+</div>
+</section><section id="but-.decode-is-not-the-solution" class="slide level2">
+<h1>But .decode() Is Not The Solution</h1>
+<pre><code>#!/usr/bin/env python
+u1 = open(&#39;j1&#39;).read().decode(&#39;utf-8&#39;)
+u2 = open(&#39;j2&#39;).read().decode(&#39;utf-8&#39;)
+print u1, u2, isinstance(u1, unicode)
+print u1 == u2
+
+$ ./2.py
+José José True
+False</code></pre>
+<p>same, same...</p>
+<p><em>How text is entered &amp; interpreted by humans is hard - but irrelevant for inter systems applications</em></p>
 </section></section>
 <section><section id="the-better-way" class="titleslide slide level1"><h1>The Better Way</h1></section><section id="all-text-is-bytes" class="slide level2">
 <h1>All Text Is Bytes</h1>
@@ -231,32 +259,6 @@ print u&#39;José&#39;                  # can be piped w/o crash</code></pre>
 <li><strong>Implicit</strong> conversions by Py2, allowing to write lean, simple, uncluttered, <strong><a href="https://www.python.org/dev/peps/pep-0020/">explicit</a></strong> problem domain specific code</li>
 <li>.decode, .encode only for <em>special</em> situations: Mind the MS codepages <a href="https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today">fubar</a> when receiving text from ancient times</li>
 </ul>
-</section><section id="human-text-can-be-hard" class="slide level2">
-<h1>Human Text <em>Can</em> Be Hard</h1>
-<pre><code>#!/usr/bin/env python
-s1 = open(&#39;j1&#39;).read()
-s2 = open(&#39;j2&#39;).read()
-print s1, s2
-print s1 == s2
-
-$ ./1.py
-José José
-False</code></pre>
-<div class="fragment">
-<p>False !?</p>
-</div>
-</section><section id="but-unicode-is-not-the-solution" class="slide level2">
-<h1>But Unicode Is Not The Solution</h1>
-<pre><code>#!/usr/bin/env python
-u1 = open(&#39;j1&#39;).read().decode(&#39;utf-8&#39;)
-u2 = open(&#39;j2&#39;).read().decode(&#39;utf-8&#39;)
-print u1, u2, isinstance(u1, unicode)
-print u1 == u2
-
-$ ./2.py
-José José True
-False</code></pre>
-<p>same, same...</p>
 </section><section id="links" class="slide level2">
 <h1>Links</h1>
 <ul>

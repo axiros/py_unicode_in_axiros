@@ -1,10 +1,15 @@
-# Text In Industrial Python Linux Applications
+# Text In Python [M2M/IoT](http://en.wikipedia.org/wiki/Machine_to_machine) & Industrial Applications
 
 ## Axiros GmbH
 May, 2015, Gunther Klessinger
 
 <br>
 <br>
+
+- ``Esc``: Overview
+- ``s``: Present
+- ``STRG-` + STRG-[1-9] to sketch, STRG-[-=] width``
+
 Themes:
 [white](?theme=white)
 [black](?theme=black) 
@@ -17,11 +22,8 @@ Themes:
 [sky](?theme=sky)
 [solarized](?theme=solarized) 
 
-- ``Esc`` to get an overview
-- ``s`` to present
-- ``STRG-` + STRG-[1-9] to sketch, STRG-[-=] width``
 
-# "Whats the Problem, Why Should I Care"
+# "Whats the Problem, Why Should I Care?"
 
 ## Foreground Ok - Logfile Crashes
 
@@ -149,6 +151,7 @@ Decode → Process → Encode. Everything.
 </a>
 
 
+
 ## Feasible?
 
 Think a second about what this means:
@@ -180,7 +183,7 @@ For 'advantages' like this?
     4.0
 
 
-## .Decode() = irrelevant
+## .decode() = irrelevant
 
 The theory and idea behind having standards accepted, ratified, and agreed upon
 by nations around the world, is to ensure that the system from country A will
@@ -193,6 +196,41 @@ communication.*"
 
 => Non ASCII text values are typically just passed through, e.g. to storage.
 Sometimes compared. Decoding required: Next to never!
+
+
+## Human Text *Can* Be Hard
+
+    #!/usr/bin/env python
+    s1 = open('j1').read()
+    s2 = open('j2').read()
+    print s1, s2
+    print s1 == s2
+
+    $ ./1.py
+    José José
+    False
+
+. . .
+
+False !?
+
+
+## But .decode() Is Not The Solution
+
+    #!/usr/bin/env python
+    u1 = open('j1').read().decode('utf-8')
+    u2 = open('j2').read().decode('utf-8')
+    print u1, u2, isinstance(u1, unicode)
+    print u1 == u2
+
+    $ ./2.py
+    José José True
+    False
+
+same, same...
+
+*How text is entered & interpreted by humans is hard - but irrelevant for inter
+systems applications*
 
 
 
@@ -299,39 +337,6 @@ encoding.
 - .decode, .encode only for *special* situations: Mind the MS codepages
 [fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today)
 when receiving text from ancient times
-
-
-## Human Text *Can* Be Hard
-
-    #!/usr/bin/env python
-    s1 = open('j1').read()
-    s2 = open('j2').read()
-    print s1, s2
-    print s1 == s2
-
-    $ ./1.py
-    José José
-    False
-
-. . .
-
-False !?
-
-
-## But Unicode Is Not The Solution
-
-    #!/usr/bin/env python
-    u1 = open('j1').read().decode('utf-8')
-    u2 = open('j2').read().decode('utf-8')
-    print u1, u2, isinstance(u1, unicode)
-    print u1 == u2
-
-    $ ./2.py
-    José José True
-    False
-
-same, same...
-
 
 
 

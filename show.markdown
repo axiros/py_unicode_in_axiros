@@ -1,10 +1,8 @@
-# Text In Axiros Python Processes
+# Text In Industrial Python Linux Applications
 
 ## Axiros GmbH
 May, 2015, Gunther Klessinger
 
-<br>
-<br>
 <br>
 <br>
 Themes:
@@ -326,7 +324,7 @@ We [convert](https://github.com/axiros/nested_encode) any json right after loads
 - Ability to work with text 'as is', str(), unicode() **w/o type checking**
 - **Implicit** conversions by Py2, allowing to write lean, simple, uncluttered, **[explicit](https://www.python.org/dev/peps/pep-0020/)**
   problem domain specific code
-- .decode, .encode only for special situations: Mind the MS codepages
+- .decode, .encode only for *special* situations: Mind the MS codepages
 [fubar](https://github.com/AXGKl/unicode-kills-python3#bytes-without-a-meaning-the-ibmmicrosoft-codepage-fubar---and-its-relevance-today)
 when receiving text from ancient times
 

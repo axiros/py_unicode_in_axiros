@@ -33,7 +33,7 @@ No h3 allowed.
 
 - Check [impress.js](http://bartaz.github.io/impress.js/#/bored)
 - CSS currently out of the box, would require some effort to allow more content on slides, scrolling and better CI
-- Real cool would be [this](https://github.com/damianavila/RISE), i.e. the possibility to show live, working code. 
+- Real cool would be [this](https://github.com/damianavila/RISE), i.e. the possibility to show live, working code, incl. updated charts, within the slideshow. 
 
 But no time currently to have a look :-(
 

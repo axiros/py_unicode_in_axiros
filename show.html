@@ -238,12 +238,12 @@ J o s é</code></pre>
 </ul>
 </section><section id="nested-encode" class="slide level2">
 <h1>Nested Encode</h1>
-<p>We <a href="https://github.com/axiros/nested_encode">convert</a> any json right after loads (ty <a href="https://github.com/stephan-hof">SH</a>):</p>
+<p>We <a href="https://github.com/axiros/nested_encode">convert</a> any json right after loads (converter by <a href="https://github.com/stephan-hof">SH</a>, in C, perf. loss &lt; 20%)</p>
 <pre><code>&gt;&gt;&gt; from nested_encode import encode_nested
 &gt;&gt;&gt; encode_nested(json.loads(data))</code></pre>
 <ul>
 <li>Should any other library (suds?) deliver unicode structures - convert same way.</li>
-<li>Py2 libraries normally deliver <em>always</em> byte strings as default.</li>
+<li>Py2 libraries normally deliver anyway byte strings as default.</li>
 </ul>
 </section></section>
 <section><section id="problem-solved" class="titleslide slide level1"><h1>Problem Solved</h1></section><section id="python2-perfection" class="slide level2">

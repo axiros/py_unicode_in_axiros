@@ -303,13 +303,13 @@ encoding.
 
 ## Nested Encode
 
-We [convert](https://github.com/axiros/nested_encode) any json right after loads
+[Convert](https://github.com/axiros/nested_encode) any json right after loads
  (converter by [SH](https://github.com/stephan-hof), in C, perf. loss < 20%)
 
     >>> from nested_encode import encode_nested
     >>> encode_nested(json.loads(data))
 
-- Should any other library (suds?) deliver unicode structures - convert same way.
+- *Should* any other library (suds?) deliver unicode structures - convert same way.
 - Py2 libraries normally deliver anyway byte strings as default.
 
 # Problem Solved
@@ -342,5 +342,7 @@ when receiving text from ancient times
 
 ## 
 
+<a href="http://axiros.com">
 <img src="../images/ax.png" alt="sw" style="border:0px; width: 200px;" />
+</a>
 

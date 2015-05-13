@@ -238,11 +238,11 @@ J o s é</code></pre>
 </ul>
 </section><section id="nested-encode" class="slide level2">
 <h1>Nested Encode</h1>
-<p>We <a href="https://github.com/axiros/nested_encode">convert</a> any json right after loads (converter by <a href="https://github.com/stephan-hof">SH</a>, in C, perf. loss &lt; 20%)</p>
+<p><a href="https://github.com/axiros/nested_encode">Convert</a> any json right after loads (converter by <a href="https://github.com/stephan-hof">SH</a>, in C, perf. loss &lt; 20%)</p>
 <pre><code>&gt;&gt;&gt; from nested_encode import encode_nested
 &gt;&gt;&gt; encode_nested(json.loads(data))</code></pre>
 <ul>
-<li>Should any other library (suds?) deliver unicode structures - convert same way.</li>
+<li><em>Should</em> any other library (suds?) deliver unicode structures - convert same way.</li>
 <li>Py2 libraries normally deliver anyway byte strings as default.</li>
 </ul>
 </section></section>
@@ -266,7 +266,7 @@ print u&#39;José&#39;                  # can be piped w/o crash</code></pre>
 </ul>
 </section><section id="section" class="slide level2">
 <h1></h1>
-<p><img src="../images/ax.png" alt="sw" style="border:0px; width: 200px;" /></p>
+<p><a href="http://axiros.com"> <img src="../images/ax.png" alt="sw" style="border:0px; width: 200px;" /> </a></p>
 </section></section>
     </div>
   </div>

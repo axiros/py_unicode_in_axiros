@@ -195,7 +195,7 @@ Any text identifier in any global standard is: **ASCII**.
 
 By *definition* of being *global*.
 
-Should we really do risky conversions of ANY possibly text type object?
+Do risky conversions of ANY (possibly) text object?
 
     for k, v in my_payload.items():
         if isinstance(v, basestring):

@@ -178,7 +178,7 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <h1>Standards Vs. Unicode</h1>
 <p>Any text identifier in any global standard is: <strong>ASCII</strong>.</p>
 <p>By <em>definition</em> of being <em>global</em>.</p>
-<p>Should we really do risky conversions of ANY possibly text type object?</p>
+<p>Do risky conversions of ANY (possibly) text object?</p>
 <pre><code>for k, v in my_payload.items():
     if isinstance(v, basestring):
         my_payload[k] = v.decode(&#39;utf-8&#39;) # is it utf-8?! Nesting?</code></pre>

@@ -183,7 +183,7 @@ For 'advantages' like this?
     4.0
 
 
-## .decode() = irrelevant
+## Decode = Irrelevant
 
 The theory and idea behind having standards accepted, ratified, and agreed upon
 by nations around the world, is to ensure that the system from country A will

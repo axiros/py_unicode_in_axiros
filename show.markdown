@@ -21,40 +21,9 @@ Themes:
 - ``s`` to present
 - ``STRG-` + STRG-[1-9] to sketch, STRG-[-=] width``
 
-# Whats the Problem, Why Should I Care
+# "Whats the Problem, Why Should I Care"
 
-## what you see != what you get
-
-    #!/usr/bin/env python
-    s1 = open('j1').read()
-    s2 = open('j2').read()
-    print s1, s2
-    print s1 == s2
-
-    $ ./1.py
-    José José
-    False
-
-. . .
-
-False !?
-
-
-## unicode objects to the rescue?
-
-    #!/usr/bin/env python
-    u1 = open('j1').read().encode('utf-8')
-    u2 = open('j2').read().encode('utf-8')
-    print u1, u2, isinstance(u1, unicode)
-    print u1 == u2
-
-    $ ./2.py
-    José José True
-    False
-
-same, same...
-
-## foreground ok - logfile crashes
+## Foreground Ok - Logfile Crashes
 
     #!/usr/bin/env python
     u1 = open('j1').read().decode('utf-8')
@@ -145,6 +114,37 @@ the well known ``str()``, ``%s`` problems
     >>> u'%s' % 'José'
     Traceback (most recent call last): ...
     UnicodeDecodeError: 'ascii' codec cant decode ...
+
+## Text *Can* Be Hard
+
+    #!/usr/bin/env python
+    s1 = open('j1').read()
+    s2 = open('j2').read()
+    print s1, s2
+    print s1 == s2
+
+    $ ./1.py
+    José José
+    False
+
+. . .
+
+False !?
+
+
+## But Unicode Is Not The Solution
+
+    #!/usr/bin/env python
+    u1 = open('j1').read().encode('utf-8')
+    u2 = open('j2').read().encode('utf-8')
+    print u1, u2, isinstance(u1, unicode)
+    print u1 == u2
+
+    $ ./2.py
+    José José True
+    False
+
+same, same...
 
 
 # Doomed!?

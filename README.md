@@ -6,11 +6,16 @@ Watch the presentation [here](https://axchange.axiros.com/multimedia/unicode/uni
 
 ## How to Create Other Presentations
 
-- source is in show.markdown, free to modify. Check how [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) works 
-- ./make.py checks for changes of show.markdown and rebuilds reveal.js/index.html - which you open in the browser to see the presentation
-- ./make.py requires pandoc with reveal output plugin
+### Technologies
 
-=> brew install pandoc 
+- Format is [reveal.js](http://lab.hakim.se/reveal-js/#/)
+- Source is [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+- Converter is pandoc => ``brew install pandoc``  (comes with reveal output template)
+
+### Toolchain
+
+- source is in show.markdown, free to modify.  [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) works 
+- ./make.py checks for changes of show.markdown and rebuilds reveal.js/index.html - which you open in the browser to see the presentation. make.py requires pandoc with reveal output plugin
 
 It did not work out of box with the reveal.js version in this repo, so make.py inserts content into fitting index.html.tmpl
 
@@ -24,7 +29,13 @@ Structure of presentation must exactly follow this scheme:
 
 No h3 allowed.
 
+### Notes
 
+- Check [impress.js](http://bartaz.github.io/impress.js/#/bored)
+- CSS currently out of the box, would require some effort to allow more content on slides, scrolling and better CI
+- Real cool would be [this](https://github.com/damianavila/RISE), i.e. the possibility to show live, working code. 
+
+But no time currently to have a look :-(
 
 
 

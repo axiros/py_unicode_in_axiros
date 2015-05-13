@@ -190,9 +190,8 @@ by nations around the world, is to ensure that the system from country A will
 be easily integrated with the system from country B with little effort.
 
 
-"*While unicode maps the BIGGEST POSSIBLE set of meaningful information for inter
-HUMAN communication, standards define the smallest necessary one for inter SYSTEMS
-communication.*"
+"*While Unicode maps the BIGGEST POSSIBLE set of meaningful information for 
+HUMANS, Standards define the SMALLEST NECESSARY, for SYSTEMS.*"
 
 => Non ASCII text values are typically just passed through, e.g. to storage.
 Sometimes compared. Decoding required: Next to never!

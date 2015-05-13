@@ -328,8 +328,8 @@ encoding.
 
     s = 'é'; open('f', 'w').write(s)
     os.stat('f').st_size == len(s) # True
-    '%s' % unicode(str(u'é')) == s # works(!), True
-    print u'José'                  # can be piped w/o crash
+    '%s' % unicode(str(u'é')) == s # Works(!), True
+    print unicode('José').upper()  # Can be piped w/o crash
 
 - Ability to work with text 'as is', str(), unicode() **w/o type checking**
 - **Implicit** conversions by Py2, allowing to write lean, simple, uncluttered, **[explicit](https://www.python.org/dev/peps/pep-0020/)**

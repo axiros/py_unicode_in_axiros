@@ -258,8 +258,8 @@ J o s é</code></pre>
 <h1>Python2 = Perfection</h1>
 <pre><code>s = &#39;é&#39;; open(&#39;f&#39;, &#39;w&#39;).write(s)
 os.stat(&#39;f&#39;).st_size == len(s) # True
-&#39;%s&#39; % unicode(str(u&#39;é&#39;)) == s # works(!), True
-print u&#39;José&#39;                  # can be piped w/o crash</code></pre>
+&#39;%s&#39; % unicode(str(u&#39;é&#39;)) == s # Works(!), True
+print unicode(&#39;José&#39;).upper()  # Can be piped w/o crash</code></pre>
 <ul>
 <li>Ability to work with text 'as is', str(), unicode() <strong>w/o type checking</strong></li>
 <li><strong>Implicit</strong> conversions by Py2, allowing to write lean, simple, uncluttered, <strong><a href="https://www.python.org/dev/peps/pep-0020/">explicit</a></strong> problem domain specific code</li>

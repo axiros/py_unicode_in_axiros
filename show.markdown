@@ -173,7 +173,7 @@ By *definition* of being *global*.
 Do risky conversions of ANY (possibly) text object?
 
     for k, v in my_payload.items():
-        if isinstance(v, basestring):
+        if isinstance(v, str):
             my_payload[k] = v.decode('utf-8') # is it utf-8?! Nesting?
 
 For 'advantages' like this?

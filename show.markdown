@@ -228,7 +228,7 @@ False !?
 
 same, same...
 
-*How text is entered & interpreted by humans is hard - but irrelevant for inter
+*How text is entered & interpreted by humans is [hard](http://utf8everywhere.org/#myth.strlen) - but irrelevant for inter
 systems applications*
 
 

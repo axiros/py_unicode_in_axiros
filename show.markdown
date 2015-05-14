@@ -1,4 +1,4 @@
-# Text In Python [M2M/IoT](http://en.wikipedia.org/wiki/Machine_to_machine) & Industrial Applications
+# How to Handle Text In Python [M2M/IoT](http://en.wikipedia.org/wiki/Machine_to_machine) & Industrial Server Applications
 
 ## Axiros GmbH
 May, 2015, Gunther Klessinger

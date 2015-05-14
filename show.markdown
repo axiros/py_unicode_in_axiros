@@ -345,10 +345,11 @@ when receiving text from ancient times
 
 - [This](https://github.com/axiros/unicode_in_axiros/blob/master/show.markdown)
   slide set
-- [Tons of further information](https://github.com/AXGKl/unicode-kills-python3) incl. defaultencoding risk analysis and why
-  I think 'official' Python3's unicode only design  nowadays is
-  plain wrong (out-dated / risky / obsolete)
 - UTF-8 [manifesto](http://utf8everywhere.org/#faq.python) about Python3
+- [Tons of further information](https://github.com/AXGKl/unicode-kills-python3) incl. defaultencoding risk analysis and why
+  I think Python3's unicode only design  nowadays is
+  plain wrong (out-dated / risky / obsolete / [dies in
+flames](http://lucumr.pocoo.org/2014/5/12/everything-about-unicode/))
 
 ##
 

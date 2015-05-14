@@ -297,19 +297,19 @@ And in packages' __init__, to enforce this:
 
 ## Json
 
-json restricted itself to transferring human symbols only - via unicode
+Json restricted itself to transferring human symbols only - via unicode
 codepoints, on top of UTF-8 on the wire.
 
 Why?
-Javascript came from the human text processing world
+Javascript came from the human text processing world.
 
 
 - Json is not an application protocol but a data exchange format, a 'carrier'
-  of application data
+  of application data.
 - A ``de-facto`` standard,now an RFC - for it's
   [obvious](http://www.json.org/fatfree.html) advantages, independent of
 encoding.
-- Safely convertable to UTF-8
+- Safely convertable to UTF-8.
 
 ## Nested Encode
 

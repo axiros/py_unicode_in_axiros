@@ -350,6 +350,13 @@ when receiving text from ancient times
   plain wrong (out-dated / risky / obsolete)
 - UTF-8 [manifesto](http://utf8everywhere.org/#faq.python) about Python3
 
+##
+
+<a href="http://lucumr.pocoo.org/2014/5/12/everything-about-unicode/">
+<img src="../images/iopy3.png" alt="sw" style="border:0px; width: 90%;" />
+</a>
+
+
 ## 
 
 <a href="http://axiros.com">

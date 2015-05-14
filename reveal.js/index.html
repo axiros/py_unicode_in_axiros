@@ -155,7 +155,7 @@ UnicodeDecodeError: &#39;ascii&#39; codec cant decode ...</code></pre>
 <p>By <em>definition</em> of being <em>global</em>.</p>
 <p>Do risky conversions of ANY (possibly) text object?</p>
 <pre><code>for k, v in my_payload.items():
-    if isinstance(v, basestring):
+    if isinstance(v, str):
         my_payload[k] = v.decode(&#39;utf-8&#39;) # is it utf-8?! Nesting?</code></pre>
 <p>For 'advantages' like this?</p>
 <pre><code>&gt;&gt;&gt; RAM, unic = sys.getsizeof, u&#39; &#39; * 100000

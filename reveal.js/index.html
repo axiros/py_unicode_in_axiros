@@ -200,7 +200,7 @@ False</code></pre>
 <li><strong>All text is str() type</strong>, i.e. usually exactly the bytes as they come in and have to go out, w/o any conversions at ingress or egress.</li>
 <li>Encoding of <strong>any</strong> str() text object is <strong>UTF-8</strong> (which is equivalent to ASCII for identifiers)</li>
 <li>Immediate encoding of <strong>json</strong> <code>loads</code> results to UTF-8.</li>
-<li>We let Python convert types <em>implicitly</em>, behind the scenes (see below)</li>
+<li>We let Python convert types <em>implicitly</em></li>
 <li>Unicode only as intermittent functions - <strong>if</strong> required.</li>
 </ol>
 <p>Note: This is also the way of Go, Rust and other modern languages built for inter systems communication.</p>

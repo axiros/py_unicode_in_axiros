@@ -242,7 +242,7 @@ systems applications*
 1. Encoding of **any** str() text object is **UTF-8** (which is equivalent to
    ASCII for identifiers)
 1. Immediate encoding of **json** ``loads`` results to UTF-8.
-1. We let Python convert types *implicitly*, behind the scenes (see below)
+1. We let Python convert types *implicitly*
 1. Unicode only as intermittent functions - **if** required.
 
 Note: This is also the way of Go, Rust and other modern languages built for inter systems communication.

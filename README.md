@@ -13,7 +13,7 @@
 
 ### Toolchain
 
-    git clone https://github.com/axiros/unicode_in_axiros/
+    git clone https://github.com/axiros/py_unicode_in_axiros/
     ./make.py # in one terminal
     vi show.markdown # in another, write YOUR content
     file:///<path to unicode_in_axiros>/reveal.js/index.html # in browser to see presentation
